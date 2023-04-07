@@ -99,6 +99,7 @@ services:
       - ./monitoring/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
       - ./monitoring/containers-monitoring-dashboard.json:/var/lib/grafana/dashboards/containers-monitoring-dashboard.json
       - ./monitoring/host-monitoring-dashboard.json:/var/lib/grafana/dashboards/host-monitoring-dashboard.json
+      - ./monitoring/laptop-monitoring-dashboard.json:/var/lib/grafana/dashboards/laptop-monitoring-dashboard.json
       - ./monitoring/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
       - grafana:/var/lib/grafana
     expose:
