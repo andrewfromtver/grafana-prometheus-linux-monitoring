@@ -910,6 +910,7 @@
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
+    "linux",
     "docker",
     "ops"
   ],
