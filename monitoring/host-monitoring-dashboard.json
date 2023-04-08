@@ -1461,7 +1461,7 @@
     ]
   },
   "timezone": "Europe/Moscow",
-  "title": "Linux Host Metrics",
+  "title": "Linux Server Metrics (prometheus)",
   "uid": "ov0oEgdik",
   "version": 1,
   "weekStart": "monday"

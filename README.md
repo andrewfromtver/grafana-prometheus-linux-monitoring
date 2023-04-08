@@ -3,6 +3,10 @@
 * Add `.env` file (in `./` folder)
 * Execute command`docker compose -p monitoring up -d --wait grafana` (in `./` folder)
 
+If you want to use Postgres performance metrics add postgress eporter manualy (more information in video)
+
+https://youtu.be/HLkBQC4mcp4
+
 # .env params
 
 *Grafana creds*
@@ -25,3 +29,5 @@
 ![Screenshot_04](docs/Screenshot-04.png)
 
 ![Screenshot_05](docs/Screenshot-05.png)
+
+![Screenshot_06](docs/Screenshot-06.png)

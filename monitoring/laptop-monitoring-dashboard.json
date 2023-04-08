@@ -1706,7 +1706,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Linux Laptop Metrics",
+  "title": "Linux Laptop Metrics (prometheus)",
   "uid": "linux-stats",
   "version": 1,
   "weekStart": ""

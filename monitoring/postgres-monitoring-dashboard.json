@@ -1428,7 +1428,7 @@
     ]
   },
   "timezone": "Europe/Moscow",
-  "title": "PostgreSQL Metrics",
+  "title": "PostgreSQL Metrics (postgres exporter)",
   "uid": "CwD66dnmz",
   "version": 1,
   "weekStart": "monday"

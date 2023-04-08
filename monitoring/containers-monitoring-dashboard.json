@@ -1052,7 +1052,7 @@
   },
   "timepicker": {},
   "timezone": "Europe/Moscow",
-  "title": "Docker Containers Metrics",
+  "title": "Docker Metrics (prometheus + cadvisor)",
   "uid": "LS579kenz",
   "version": 1,
   "weekStart": "monday"
