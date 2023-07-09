@@ -1,0 +1,58 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build-code-job:
+  stage: build
+  tags:
+    - build
+    - docker
+  before_script:
+    - curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20🛠%20%5B$CI_PROJECT_NAME%5D%20Build%20job%20started"
+  script:
+    - doas docker-compose build
+  after_script:
+    - >
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20✅%20%5B$CI_PROJECT_NAME%5D%20Build%20job%20completed"
+      else
+        curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20❌%20%5B$CI_PROJECT_NAME%5D%20Build%20job%20failed%20$CI_PIPELINE_URL"
+      fi
+
+test-code-job:
+  stage: test
+  tags:
+    - test
+    - docker
+  script:
+    - semgrep scan --config auto --output $CI_PROJECT_NAME-sast-report.json --json
+  artifacts:
+    paths:
+      - $CI_PROJECT_NAME-sast-report.json
+    expire_in: 4 week
+    name: ${CI_PROJECT_NAME}_${CI_JOB_ID}_sast_report
+  after_script:
+    - >
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20✅%20%5B$CI_PROJECT_NAME%5D%20All%20tests%20passed%20successfuly"
+        curl -F document=@"$CI_PROJECT_NAME-sast-report.json" https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument?chat_id=$TELEGRAM_CHAT_ID
+      else
+        curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20❌%20%5B$CI_PROJECT_NAME%5D%20Tests%20failed%20$CI_PIPELINE_URL"
+      fi
+
+deploy-code-job:
+  stage: deploy
+  tags:
+    - deploy
+    - docker
+  script:
+    - doas docker-compose -p $CI_PROJECT_NAME down
+    - doas docker-compose -p $CI_PROJECT_NAME up -d --wait grafana
+  after_script:
+    - >
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20🚀%20%5B$CI_PROJECT_NAME%5D%20Deploy%20job%20completed%20$PROJECT_URL"
+      else
+        curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20❌%20%5B$CI_PROJECT_NAME%5D%20Deploy%20job%20failed%20$CI_PIPELINE_URL"
+      fi
