@@ -1,24 +1,6 @@
 stages:
-  - build
   - test
   - deploy
-
-build-code-job:
-  stage: build
-  tags:
-    - build
-    - docker
-  before_script:
-    - curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20🛠%20%5B$CI_PROJECT_NAME%5D%20Build%20job%20started"
-  script:
-    - doas docker-compose build
-  after_script:
-    - >
-      if [ $CI_JOB_STATUS == 'success' ]; then
-        curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20✅%20%5B$CI_PROJECT_NAME%5D%20Build%20job%20completed"
-      else
-        curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20❌%20%5B$CI_PROJECT_NAME%5D%20Build%20job%20failed%20$CI_PIPELINE_URL"
-      fi
 
 test-code-job:
   stage: test
@@ -47,6 +29,9 @@ deploy-code-job:
     - deploy
     - docker
   script:
+    - touch .env
+    - echo "GF_SECURITY_ADMIN_USER=$GF_SECURITY_ADMIN_USER" >> .env
+    - echo "GF_SECURITY_ADMIN_PASSWORD=$GF_SECURITY_ADMIN_PASSWORD" >> .env
     - doas docker-compose -p $CI_PROJECT_NAME down
     - doas docker-compose -p $CI_PROJECT_NAME up -d --wait grafana
   after_script:
