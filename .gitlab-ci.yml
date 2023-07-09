@@ -26,8 +26,7 @@ test-code-job:
 deploy-code-job:
   stage: deploy
   tags:
-    - deploy
-    - docker
+    - host
   script:
     - touch .env
     - echo "GF_SECURITY_ADMIN_USER=$GF_SECURITY_ADMIN_USER" >> .env
