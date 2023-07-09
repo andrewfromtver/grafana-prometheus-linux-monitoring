@@ -31,12 +31,12 @@ deploy-code-job:
     - touch .env
     - echo "GF_SECURITY_ADMIN_USER=$GF_SECURITY_ADMIN_USER" >> .env
     - echo "GF_SECURITY_ADMIN_PASSWORD=$GF_SECURITY_ADMIN_PASSWORD" >> .env
-    - docker compose -p $CI_PROJECT_NAME down
-    - docker compose -p $CI_PROJECT_NAME up -d --wait grafana
+    - docker compose -p $CI_PROJECT_NAME up -d --wait grafana --build
   after_script:
     - >
       if [ $CI_JOB_STATUS == 'success' ]; then
         curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20🚀%20%5B$CI_PROJECT_NAME%5D%20Deploy%20job%20completed%20$PROJECT_URL"
       else
+        docker compose -p $CI_PROJECT_NAME down
         curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20❌%20%5B$CI_PROJECT_NAME%5D%20Deploy%20job%20failed%20$CI_PIPELINE_URL"
       fi
