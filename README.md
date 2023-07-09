@@ -1,7 +1,7 @@
 # how to
 
-* Add `.env` file (in `./` folder)
-* Execute command`docker compose -p monitoring up -d --wait grafana` (in `./` folder)
+* Add `.env` file
+* Execute command`docker compose -p monitoring up -d --wait grafana`
 
 # .env params
 
@@ -13,17 +13,3 @@
 
 *Grafana web UI*
 `http://localhost:3000`
-
-# screenshots
-
-![Screenshot_01](docs/Screenshot-01.png)
-
-![Screenshot_02](docs/Screenshot-02.png)
-
-![Screenshot_03](docs/Screenshot-03.png)
-
-![Screenshot_04](docs/Screenshot-04.png)
-
-![Screenshot_05](docs/Screenshot-05.png)
-
-![Screenshot_06](docs/Screenshot-06.png)
