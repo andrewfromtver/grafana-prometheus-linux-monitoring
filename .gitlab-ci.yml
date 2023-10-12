@@ -26,12 +26,13 @@ test-code-job:
 deploy-code-job:
   stage: deploy
   tags:
-    - host
+    - deploy
+    - docker
   script:
     - touch .env
     - echo "GF_SECURITY_ADMIN_USER=$GF_SECURITY_ADMIN_USER" >> .env
     - echo "GF_SECURITY_ADMIN_PASSWORD=$GF_SECURITY_ADMIN_PASSWORD" >> .env
-    - docker compose -p $CI_PROJECT_NAME up -d --wait grafana --build
+    - doas docker-compose -p $CI_PROJECT_NAME up -d --wait grafana --build
   after_script:
     - >
       if [ $CI_JOB_STATUS == 'success' ]; then
