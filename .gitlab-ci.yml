@@ -2,19 +2,19 @@ stages:
   - test
   - deploy
 
-
-
 test-code-job:
   stage: test
   tags:
     - test
     - docker
+  before_script:
+    - curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage?chat_id=$TELEGRAM_CHAT_ID&text=%20🛠%20%5B$CI_PROJECT_NAME%5D%20Deploy%20job%20started"
   script:
     - semgrep scan --config auto --output $CI_PROJECT_NAME-sast-report.json --json
   artifacts:
     paths:
       - $CI_PROJECT_NAME-sast-report.json
-    expire_in: 4 week
+    expire_in: 1 week
     name: ${CI_PROJECT_NAME}_${CI_JOB_ID}_sast_report
   after_script:
     - >
